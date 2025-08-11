@@ -1,0 +1,37 @@
+name: Deploying main Branch
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+
+    runs-on: [self-hosted, node-vm] 
+
+    env:
+      PM2_PROCESS_NAME: "node-main" ##Add process name here
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          clean: False
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Start or Reload the Application
+        run: |
+          if pm2 list | grep -q "$PM2_PROCESS_NAME"; then
+            echo "Process $PM2_PROCESS_NAME exists. Reloading..."
+            pm2 reload "$PM2_PROCESS_NAME"
+          else
+            echo "Process $PM2_PROCESS_NAME does not exist. Starting..."
+            pm2 start "npm start" --name "$PM2_PROCESS_NAME"
+          fi
