@@ -12,10 +12,10 @@ app.use(express.json());         // if you want JSON body parsing
 
 // a simple route
 app.get('/', (req, res) => {
-  res.send(`🚀 Backend Listening on port ${PORT}`);
+  res.send(`🚀 PROD Backend Listening on port ${PORT}`);
 });
 
 // start server
 app.listen(PORT, () => {
-  console.log(`⚡️ Express server listening on port ${PORT}`);
+  console.log(`⚡️ PROD Express server listening on port ${PORT}`);
 });
