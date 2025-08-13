@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, node-vm]
+    runs-on: [self-hosted,node-vm]
 
     env:
       PM2_PROCESS_NAME: "node-main"
