@@ -4,27 +4,31 @@ on:
   push:
     branches:
       - main
+
 jobs:
   build:
-
-    runs-on: [self-hosted, node-vm] 
+    runs-on: [self-hosted, node-vm]
 
     env:
-      PM2_PROCESS_NAME: "node-main" ##Add process name here
+      PM2_PROCESS_NAME: "node-main"
+      node-version: 20
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          clean: False
+          clean: false
         
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '22'
+          node-version: ${{ env.node-version }}
 
       - name: Install dependencies
         run: npm install
+
+      - name: Install PM2
+        run: npm install -g pm2
 
       - name: Start or Reload the Application
         run: |
@@ -35,3 +39,4 @@ jobs:
             echo "Process $PM2_PROCESS_NAME does not exist. Starting..."
             pm2 start "npm start" --name "$PM2_PROCESS_NAME"
           fi
+          pm2 save
